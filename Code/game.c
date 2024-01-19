@@ -1,4 +1,5 @@
 #include "game.h"
+#include "menu.h"
 
 
 
@@ -17,7 +18,7 @@ bool showStats = true;
 
 
 bool trade = false;
-
+int start = false;
 
 
 chest_t chestKey = {false, 20};
@@ -38,6 +39,22 @@ int Y = 17;
 
 int main()
 {
+	start = showMenu();
+	switch (start){
+		case 0:
+			printf("\n\n");
+			printMenu(false);
+			Sleep(1000);
+			exit(EXIT_SUCCESS);
+		case 1:
+			break;
+		case 2:
+			money = 0;
+			break;
+		default:
+			break;
+	
+	}
 	char mov = ' ';
 	printMaze(X, Y);
 	while (mov != 'a')
@@ -80,9 +97,9 @@ int main()
 				Y = 140;
 			}
 			break;
-		case 'i':
-			money += 100;
-			break;
+		// case 'i':
+		// 	money += 100;
+		// 	break;
 		case 'e':
 			if (XM == 'C' || XP == 'C' || YM == 'C' || YP == 'C'){
 				if ((X >= 66 && X <= 68 && Y >= 21 && Y <= 25) && chestKey.open == false){
@@ -135,11 +152,12 @@ int main()
 			else if (YP == 'T'){
 				tradeKey();
 			}
+			break;
 		case 'p':
 			saveGame();
 			break;
 		case 'l':
-			loadGame();
+			loadGame(&chestKey);
 			break;
 		case ' ':
 			break;
@@ -409,7 +427,120 @@ void saveGame(){
 
 }
 
-void loadGame(){
+void loadGame(chest_t *chestTest){
 	FILE *fp;
-	fp = fopen("./save", "r");
+	fp = fopen("./save", "a+");
+	char ch;
+	char line[8];
+	int lineNbr = 0;
+	while (fgets(line, 8, fp) != NULL){
+		line[strlen(line)-1] = '\0';
+		if (lineNbr == 0 ){
+			X = atoi(line);
+		}
+		else if (lineNbr == 1){
+			Y = atoi(line);
+		}
+		else if (lineNbr == 2){
+			keys = atoi(line);
+		}
+		else if (lineNbr == 3){
+			money = atoi(line);
+		}
+		else if (lineNbr == 4){
+			trade = atoi(line);
+		}
+		else if (lineNbr == 5){
+			if (atoi(line) == 0){
+				chestState(&chestKey, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 6){
+			if (atoi(line) == 0){
+				chestState(&chestOne, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 7){
+			if (atoi(line) == 0){
+				chestState(&chestTwo, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 8){
+			if (atoi(line) == 0){
+				chestState(&chestThree, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 9){
+			if (atoi(line) == 0){
+				chestState(&chestFour, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 10){
+			if (atoi(line) == 0){
+				chestState(&chestFive, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 11){
+			if (atoi(line) == 0){
+				chestState(&chestSix, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 12){
+			if (atoi(line) == 0){
+				chestState(&chestSeven, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 13){
+			if (atoi(line) == 0){
+				chestState(&chestEight, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 14){
+			if (atoi(line) == 0){
+				chestState(&chestNine, false);
+			}
+			else {
+				chestTest->open = true;
+			}
+		}
+		else if (lineNbr == 15){
+			if (atoi(line) == 0){
+				chestState(&chestTen, false);
+			}
+		}
+		lineNbr++;
+	}
+	fclose(fp);
+}
+
+int chestState(chest_t *chest, bool state){
+	chest->open = state;
+	return chest->open;
 }

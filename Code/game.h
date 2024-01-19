@@ -33,3 +33,5 @@ void tradeKey();
 void saveGame();
 
 void loadGame();
+
+int chestState(chest_t *chest, bool state);
